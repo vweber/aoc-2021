@@ -8,29 +8,7 @@ enum Op {
     UP = 'up',
 }
 
-function getCoordinates(log: string[]): number[] {
-    let horizontal = 0;
-    let vertical = 0;
-    log.forEach(entry => {
-        const [operation, amount] = entry.split(" ");
-        switch(operation) {
-            case Op.FORWARD:
-                horizontal += Number(amount);
-                break;
-            case Op.DOWN:
-                vertical += Number(amount);
-                break;
-            case Op.UP:
-                vertical -= Number(amount);
-                break
-            default:
-        }
-    });
-
-    return [horizontal, vertical];
-}
-
-function getAimedCoordinates(log: string[]): number[] {
+function getCoordinates(log: string[], aimed: boolean): number[] {
     let horizontal = 0;
     let vertical = 0;
     let aim = 0;
@@ -40,13 +18,23 @@ function getAimedCoordinates(log: string[]): number[] {
         switch(operation) {
             case Op.FORWARD:
                 horizontal += parsedAmount;
-                vertical += aim * parsedAmount;
+                if (aimed) {
+                    vertical += aim * parsedAmount;
+                }
                 break;
             case Op.DOWN:
-                aim += parsedAmount;
+                if (aimed) {
+                    aim += parsedAmount;
+                } else {
+                    vertical += parsedAmount;
+                }
                 break;
             case Op.UP:
-                aim -= parsedAmount;
+                if (aimed) {
+                    aim -= parsedAmount;
+                } else {
+                    vertical -= parsedAmount;
+                }
                 break
             default:
         }
@@ -58,6 +46,6 @@ function getAimedCoordinates(log: string[]): number[] {
 export const solution2 = async (test: boolean) => {
     const input = split(await read(2, { test }));
 
-    console.log(`2021-02 part one: ${multipli(getCoordinates(input))}`); // 1654760
-    console.log(`2021-02 part two: ${multipli(getAimedCoordinates(input))}`); // 1956047400
+    console.log(`2021-02 part one: ${multipli(getCoordinates(input, false))}`); // 1654760
+    console.log(`2021-02 part two: ${multipli(getCoordinates(input, true))}`); // 1956047400
 }

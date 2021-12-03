@@ -72,6 +72,6 @@ const verifyLifeSupport = (input: string[]) => {
 export const solution3 = async (test: boolean) => {
     const input = split(await read(3, { test }));
 
-    console.log(`2021-02 part one: ${multipli(alphaGammas(input))}`); // 693486
-    console.log(`2021-02 part two: ${multipli(verifyLifeSupport(input))}`); // 3379326
+    console.log(`2021-03 part one: ${multipli(alphaGammas(input))}`); // 693486
+    console.log(`2021-03 part two: ${multipli(verifyLifeSupport(input))}`); // 3379326
 }
