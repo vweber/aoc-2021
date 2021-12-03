@@ -1,5 +1,5 @@
-import { read } from '../../lib/read';
-import { split } from '../../lib/split';
+import { read } from '@lib/read';
+import { split } from '@lib/split';
 
 const countIncreases = (inputList: number[]): number => {
     return inputList.reduce(

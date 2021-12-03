@@ -1,6 +1,6 @@
-import { read } from '../../lib/read';
-import { split } from '../../lib/split';
-import { multipli } from '../../lib/operations';
+import { read } from '@lib/read';
+import { split } from '@lib/split';
+import { multipli } from '@lib/operations';
 
 const getMostCommon = (input: string[]): boolean[] => {
     const totals = [] as number[];
