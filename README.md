@@ -1,9 +1,9 @@
-###Advent of Code - Vincent Weber
-####Prerequisites
+### Advent of Code - Vincent Weber
+#### Prerequisites
 - NodeJS >= v14 : https://nodejs.org/en/
 - Yarn: https://yarnpkg.com/getting-started/install
 
-####Installation
+#### Installation
 1. Initiate the project by `yarn install` in the root directory
 2. As the input files are not added to the git repository add them in the solution directory with the file name `input.txt`. Test input files can be added as `input.test.txt`.
 3. Run the project with `yarn start`
