@@ -2,76 +2,71 @@ import { read } from '../../lib/read';
 import { split } from '../../lib/split';
 import { multipli } from '../../lib/operations';
 
-const getMostCommonOnes = (input: string[]): boolean[] => {
+const getMostCommon = (input: string[]): boolean[] => {
     const totals = [] as number[];
-    input.forEach(entry => {
-        Array.from(entry).forEach((letter, index) => {
-            totals[index] = (totals[index] || 0) + Number(letter);
+    const middle = input.length / 2;
+
+    input.forEach(line => {
+        Array.from(line).forEach((bite, index) => {
+            totals[index] = (totals[index] || 0) + Number(bite);
         });
     });
-    return totals.map(total => (total < (input.length / 2)));
+
+    return totals.map(total => total >= middle);
 }
 
 const alphaGammas = (input: string[]): number[] => {
-    const mostCommonOnes = getMostCommonOnes(input);
+    let alphaBinary = '';
+    let gammaBinary = '';
 
-    const alphaBinary = mostCommonOnes
-        .map(isMostCommon => isMostCommon ? '0' : '1')
-        .join('');
-    const alpha = parseInt(alphaBinary, 2);
+    getMostCommon(input).forEach(
+        isCommon => {
+            alphaBinary += isCommon ? '1' : '0';
+            gammaBinary += isCommon ? '0' : '1';
+        }
+    );
 
-    const gammaBinary = mostCommonOnes
-        .map(isMostCommon => isMostCommon ? '1' : '0')
-        .join('');
-    const gamma = parseInt(gammaBinary, 2);
-
-    return [alpha, gamma];
+    return [
+        parseInt(alphaBinary, 2),
+        parseInt(gammaBinary, 2),
+    ];
 }
-
-type Filter = (filterSetting: boolean) =>  (entry: string) => boolean;
-
-const createOxygenFilter: Filter = filterSetting => entry =>
-    filterSetting ? entry === '0' : entry === '1';
-
-const createCo2Scrubber: Filter = filterSetting => entry =>
-    filterSetting ? entry === '1' : entry === '0';
 
 const ratingCalculator = (
     input: string[],
     position: number,
-    createFilter: Filter,
-): string[] => {
-    if (input.length <= 1) {
-        return input;
-    }
-    if (position > input[0].length) {
-        throw Error('mayday mayday');
+    inverse: boolean,
+): string => {
+    if (input.length === 1) {
+        return input[0];
     }
 
-    const mostCommonOnes = getMostCommonOnes(input);
-    const filter = createFilter(mostCommonOnes[position])
-    const filteredInput = input.filter(
-        entry => filter(entry[position]),
+    const mostCommonPosition = getMostCommon(input)[position];
+
+    return ratingCalculator(
+        input.filter(line => {
+            return mostCommonPosition !== inverse // xor
+                ? line[position] === '1'
+                : line[position] === '0';
+
+        }),
+        position + 1,
+        inverse,
     );
-
-    return ratingCalculator(filteredInput, position + 1, createFilter);
 }
 
-const verifyLifeSupport = (input: string[]) => {
-    const oxygenDiagnostic = ratingCalculator(input, 0, createOxygenFilter)
-        .pop()!;
-    const oxygenRating = parseInt(oxygenDiagnostic, 2);
-
-    const co2ScrubberDiagnostic = ratingCalculator(input, 0, createCo2Scrubber)
-        .pop()!;
-    const co2ScubberRating = parseInt(co2ScrubberDiagnostic, 2);
-
-    return [oxygenRating, co2ScubberRating];
+const lifeSupport = (input: string[]) => {
+    const oxygenDiagnostic = ratingCalculator(input, 0, false);
+    const co2ScrubberDiagnostic = ratingCalculator(input, 0, true);
+    return [
+        parseInt(oxygenDiagnostic, 2),
+        parseInt(co2ScrubberDiagnostic, 2),
+    ];
 }
 
 export const solution3 = async (test: boolean) => {
     const input = split(await read(3, { test }));
 
     console.log(`2021-03 part one: ${multipli(alphaGammas(input))}`); // 693486
-    console.log(`2021-03 part two: ${multipli(verifyLifeSupport(input))}`); // 3379326
+    console.log(`2021-03 part two: ${multipli(lifeSupport(input))}`); // 3379326
 }
