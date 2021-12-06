@@ -41,11 +41,11 @@ const ratingCalculator = (
         return input[0];
     }
 
-    const mostCommonPosition = getMostCommon(input)[position];
+    const mostCommonAtPosition = getMostCommon(input)[position];
 
     return ratingCalculator(
         input.filter(line => {
-            return mostCommonPosition !== inverse // xor
+            return mostCommonAtPosition !== inverse // xor
                 ? line[position] === '1'
                 : line[position] === '0';
 
@@ -55,14 +55,10 @@ const ratingCalculator = (
     );
 }
 
-const lifeSupport = (input: string[]) => {
-    const oxygenDiagnostic = ratingCalculator(input, 0, false);
-    const co2ScrubberDiagnostic = ratingCalculator(input, 0, true);
-    return [
-        parseInt(oxygenDiagnostic, 2),
-        parseInt(co2ScrubberDiagnostic, 2),
-    ];
-}
+const lifeSupport = (input: string[]) => [
+    parseInt(ratingCalculator(input, 0, false), 2),
+    parseInt(ratingCalculator(input, 0, true), 2),
+];
 
 export const solution3 = async (test: boolean) => {
     const input = split(await read(3, { test }));
