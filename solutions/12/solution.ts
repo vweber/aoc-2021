@@ -77,7 +77,6 @@ const graph = () => {
         }
 
         let paths: string[][] = [];
-        const test = nodes[start].isBig || !path.includes(start);
         nodes[start].edges.forEach(next => {
             paths = paths.concat(
                 findAllPathsWithMoreTime(
