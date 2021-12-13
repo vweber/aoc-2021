@@ -10,6 +10,7 @@ import { solution9 } from './solutions/9/solution';
 import { solution10 } from './solutions/10/solution';
 import { solution11 } from './solutions/11/solution';
 import { solution12 } from './solutions/12/solution';
+import { solution13 } from './solutions/13/solution';
 
 (() => {
     // solution1(false);
@@ -22,5 +23,6 @@ import { solution12 } from './solutions/12/solution';
     // solution9(false);
     // solution10(false);
     // solution11(false);
-    solution12(false);
+    // solution12(false);
+    solution13(false);
 })();

@@ -20,6 +20,9 @@ export const matrix: <T>(input: T[][]) => Matrix<T> = <T>(input: T[][]) => {
     let values = input.map(row => [...row]);
 
     const setValue = ({ y, x }: Coordinate, value: T): void => {
+        if (!values[y]) {
+            values[y] = [];
+        }
         values[y][x] = value;
     }
 
@@ -34,7 +37,7 @@ export const matrix: <T>(input: T[][]) => Matrix<T> = <T>(input: T[][]) => {
     const getCoordinatedValues: () => CoordinateValuesList<T> = () => {
         const list: CoordinateValuesList<T> = [];
         for(let y = 0; y < values.length; y++) {
-            for(let x = 0; x < (values[0] || []).length; x++) {
+            for(let x = 0; x < (values[y] || []).length; x++) {
                 list.push({ coordinate: {y, x}, value: getValue({y, x})})
             }
         }
@@ -88,13 +91,11 @@ export const matrix: <T>(input: T[][]) => Matrix<T> = <T>(input: T[][]) => {
     }
 
     const transpose: () => Matrix<T> = () => {
-        const transposedValues: T[][] = [];
-        values.forEach(
-            (line, y) => line.forEach(
-                (value, x) => transposedValues[x][y] = value,
-            ),
-        );
-        return matrix(transposedValues);
+        const transposed: Matrix<T> = matrix([]);
+        getCoordinatedValues().forEach(({ coordinate: { x, y }, value }) => {
+            transposed.setValue({ y: x, x: y}, value);
+        });
+        return transposed;
     }
 
     const print: () => void = () => {

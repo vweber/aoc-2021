@@ -107,6 +107,6 @@ export const solution12 = async (test: boolean) => {
         g.addEdge(a,b);
     });
 
-    console.log(`2021-11 part one: ${g.findAllPaths('start', 'end', []).length}`); // 4338
-    console.log(`2021-11 part two: ${g.findAllPathsWithMoreTime('start', 'end', [], true).length}`); // 114189
+    console.log(`2021-12 part one: ${g.findAllPaths('start', 'end', []).length}`); // 4338
+    console.log(`2021-12 part two: ${g.findAllPathsWithMoreTime('start', 'end', [], true).length}`); // 114189
 }
